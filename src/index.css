@@ -1,0 +1,454 @@
+@import 'tailwindcss';
+
+/* ---------------------------------------------------------------------------
+   Nocturne — Estate & Cellars
+   Oxblood field, parchment panel, ink type, one thread of antique gold.
+   --------------------------------------------------------------------------- */
+
+@theme {
+  --color-oxblood: #4e0d1c;
+  --color-parchment: #f4eee3;
+  --color-parchment-shade: #e9dfcd;
+  --color-ink: #171009;
+  --color-ink-soft: #55483a;
+  --color-wine: #8e1b31;
+  --color-gold: #c2a15a;
+
+  /* Display is condensed on purpose: mass per line is the whole effect. */
+  --font-display: 'Anton', 'Haettenschweiler', 'Arial Narrow', sans-serif;
+  --font-logo: 'Bodoni Moda', 'Didot', 'Times New Roman', serif;
+  --font-script: 'Cormorant Garamond', 'Garamond', serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:root {
+  /* The oxblood border the parchment panel floats inside. */
+  --frame: clamp(9px, 1.15vw, 20px);
+  /* Content gutter measured from the inside edge of the panel. */
+  --gutter: clamp(20px, 4.5vw, 78px);
+  /* The fixed left rail sits between the frame and the content. */
+  --rail: clamp(34px, 4vw, 62px);
+}
+
+html {
+  background: var(--color-oxblood);
+  /* Lenis owns scrolling; native smooth behaviour fights it. */
+  scroll-behavior: auto;
+  /* The decorative figures are meant to bleed past the right edge, and
+     overflow-x on <body> alone does not stop them opening a horizontal
+     scrollbar. `clip` trims them without making <html> a scroll
+     container, which `hidden` would — and which Lenis and the sticky
+     bottle both depend on not happening. */
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-oxblood);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Lenis' required stylesheet, inlined rather than imported. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+::selection {
+  background: var(--color-wine);
+  color: var(--color-parchment);
+}
+
+/* The page scrollbar would cut across the oxblood frame. */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html,
+body {
+  scrollbar-width: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Everything below is in the `components` layer on purpose.
+
+   Unlayered rules beat every layered one regardless of specificity, so a class
+   like `.t-body` declared outside a layer would quietly win over
+   `text-parchment/75` and leave all the reversed copy — footer, menu, estate,
+   the flavour stains — dark on dark. In `components` the utilities layer sits
+   after it and overrides cleanly.
+   --------------------------------------------------------------------------- */
+
+@layer components {
+  /* -- Type scale ---------------------------------------------------------
+     Enormous display against very small body copy — the whole reason the
+     reference layout reads as confident rather than busy. */
+
+  .t-giant {
+    font-family: var(--font-display);
+    font-weight: 400;
+    /* Pre-JS fallback only: GiantType measures each line and fits it to width. */
+    font-size: clamp(2.8rem, 12vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: -0.006em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.9rem, 7.6vw, 7rem);
+    line-height: 0.88;
+    letter-spacing: -0.004em;
+    text-transform: uppercase;
+  }
+
+  .t-display-sm {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 3.3vw, 2.9rem);
+    line-height: 0.95;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .t-figure {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(2.1rem, 3.1vw, 2.9rem);
+    line-height: 0.9;
+    letter-spacing: -0.004em;
+    font-variant-numeric: lining-nums;
+  }
+
+  /* The logotype keeps the Didone — it is the mark, not the voice. */
+  .t-logo {
+    font-family: var(--font-logo);
+    font-weight: 800;
+    font-variation-settings: 'opsz' 96;
+    text-transform: uppercase;
+  }
+
+  .t-eyebrow {
+    font-family: var(--font-script);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1rem, 1.35vw, 1.4rem);
+    line-height: 1.25;
+    letter-spacing: 0.005em;
+  }
+
+  .t-micro {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 0.5625rem;
+    line-height: 1.4;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: clamp(0.75rem, 0.86vw, 0.84rem);
+    line-height: 1.72;
+    letter-spacing: 0.004em;
+    color: var(--color-ink);
+  }
+
+  .t-body-xs {
+    font-family: var(--font-sans);
+    font-weight: 300;
+    font-size: 0.6875rem;
+    line-height: 1.62;
+    letter-spacing: 0.006em;
+    color: var(--color-ink-soft);
+  }
+
+  /* -- Controls ----------------------------------------------------------- */
+
+  .btn-ink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75em;
+    padding: 0.95rem 1.55rem;
+    background: var(--color-ink);
+    color: var(--color-parchment);
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    transition: color 0.45s var(--ease-out-expo);
+  }
+
+  .btn-ink::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-wine);
+    transform: translateY(101%);
+    transition: transform 0.55s var(--ease-out-expo);
+  }
+
+  .btn-ink:hover::before,
+  .btn-ink:focus-visible::before {
+    transform: translateY(0);
+  }
+
+  .btn-wine {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.62rem 1.05rem;
+    background: var(--color-wine);
+    color: var(--color-parchment);
+    border: 0;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .btn-wine::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-ink);
+    transform: translateY(101%);
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+
+  .btn-wine:hover::before,
+  .btn-wine:focus-visible::before {
+    transform: translateY(0);
+  }
+
+  /* A rule that wipes out to the right and back in from the left. */
+  .link-rule {
+    display: inline-block;
+    position: relative;
+    padding-bottom: 0.24em;
+    color: var(--color-ink);
+  }
+
+  .link-rule::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: currentColor;
+    transform-origin: right;
+    transform: scaleX(1);
+  }
+
+  .link-rule:hover::after,
+  .link-rule:focus-visible::after {
+    animation: rule-sweep 0.62s var(--ease-out-expo);
+  }
+
+  /* drop-shadow is derived from the alpha channel, so a cut-out PNG throws
+     its own outline rather than a rectangle. Two passes: a tight contact
+     shadow and a wider ambient one, thrown right and down to agree with the
+     light on the 3D bottle. */
+  .cast-shadow {
+    filter: drop-shadow(2px 4px 3px rgba(32, 18, 11, 0.24))
+      drop-shadow(9px 15px 14px rgba(32, 18, 11, 0.22));
+  }
+
+  .hairline {
+    background: color-mix(in srgb, var(--color-ink) 22%, transparent);
+  }
+
+  /* Photography easing in over its own placeholder. */
+  .fig-in {
+    animation: fig-in 0.9s var(--ease-out-expo) both;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Letterpress grit
+   Parchment-coloured speckles painted over the type eat ink out of the glyphs
+   and vanish against the panel. The default mask is generated inline so the
+   effect is present with zero assets; texture-grit.png upgrades it in place.
+   --------------------------------------------------------------------------- */
+
+.grit {
+  position: relative;
+  isolation: isolate;
+}
+
+.grit::after {
+  content: '';
+  position: absolute;
+  inset: -3%;
+  z-index: 1;
+  pointer-events: none;
+  background-color: var(--color-parchment);
+  opacity: 0.82;
+  --grit-src: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 -0.62'/%3E%3C/filter%3E%3Crect width='260' height='260' filter='url(%23g)'/%3E%3C/svg%3E");
+  -webkit-mask-image: var(--grit-src);
+  mask-image: var(--grit-src);
+  -webkit-mask-size: 260px 260px;
+  mask-size: 260px 260px;
+  -webkit-mask-repeat: repeat;
+  mask-repeat: repeat;
+}
+
+/* Swapped in by the asset probe once the real plate texture is dropped in.
+   Tiled small rather than scaled to cover: the speckles have to stay fine
+   against letterforms hundreds of pixels tall, and scaling one copy across a
+   wide line would magnify them two or three times into blotches. The plate is
+   cropped from the middle of a speckle field, so the repeat has no structure
+   to give itself away. */
+.has-grit .grit::after {
+  --grit-src: url('/img/texture-grit.png');
+  -webkit-mask-size: 420px 420px;
+  mask-size: 420px 420px;
+  opacity: 0.88;
+}
+
+/* ---------------------------------------------------------------------------
+   Paper grain on the panel
+   --------------------------------------------------------------------------- */
+
+.paper-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23p)' opacity='0.09'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* Same again: one copy scaled over the fixed panel, never tiled. */
+.has-paper .paper-grain::before {
+  background-image: url('/img/texture-paper.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.4;
+}
+
+:where(a, button):focus-visible {
+  outline: 1px solid var(--color-gold);
+  outline-offset: 3px;
+}
+
+/* ---------------------------------------------------------------------------
+   Reveal
+   Start states are gated behind [data-motion='on'], which the motion system
+   only sets once it is actually driving. Without JS the page renders complete.
+   --------------------------------------------------------------------------- */
+
+[data-motion='on'] [data-reveal] {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Masked line reveal for display headings. */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  /* Anton's caps sit high in the em box and the line-height is tighter than
+     the glyphs, so without this the clip shaves the tops off. Pulled back out
+     with matching negative margins to keep the lines optically tight. */
+  padding-top: 0.1em;
+  margin-top: -0.1em;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+
+[data-motion='on'] .line-mask > span {
+  display: block;
+  transform: translateY(125%);
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------------------
+   Keyframes
+   --------------------------------------------------------------------------- */
+
+@keyframes rule-sweep {
+  0% {
+    transform: scaleX(1);
+    transform-origin: right;
+  }
+  49% {
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+  50% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+/* The scroll cue's travelling tick. */
+@keyframes cue {
+  0% {
+    transform: translateY(-100%);
+  }
+  55%,
+  100% {
+    transform: translateY(200%);
+  }
+}
+
+@keyframes fig-in {
+  from {
+    opacity: 0;
+    transform: scale(1.035);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  [data-motion='on'] [data-reveal] {
+    opacity: 1;
+  }
+  [data-motion='on'] .line-mask > span {
+    transform: none;
+  }
+}
