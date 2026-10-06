@@ -1,96 +1,16 @@
-import {brand, footer} from '../../lib/content';
+import {brand, footer, SHOP_URL} from '../../lib/content';
 import {PAD_L, PAD_R} from '../Section';
 import {anchor} from '../../lib/scroll';
-
-/**
- * An oxblood block at the foot of the parchment panel — the frame closing over
- * the page rather than the page simply running out.
- */
 export function Footer() {
-  return (
-    <footer
-      id="footer"
-      ref={anchor('footer')}
-      className="relative mt-[clamp(48px,10vh,140px)] bg-oxblood text-parchment"
-      style={{
-        zIndex: 40,
-        marginLeft: 'var(--frame)',
-        marginRight: 'var(--frame)',
-        paddingLeft: PAD_L,
-        paddingRight: PAD_R,
-        paddingTop: 'clamp(44px, 7vh, 96px)',
-        paddingBottom: 'clamp(24px, 4vh, 52px)',
-      }}
-    >
-      <div className="grid grid-cols-1 gap-[clamp(28px,4vw,64px)] lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <h2 data-reveal className="t-display-sm text-parchment">
-            {footer.newsletter.title}
-          </h2>
-          <p data-reveal className="t-body mt-[clamp(10px,1.2vw,18px)] max-w-[38ch] text-parchment/75">
-            {footer.newsletter.body}
-          </p>
-
-          <form
-            data-reveal
-            className="mt-[clamp(16px,2vw,28px)] flex max-w-[26rem] items-center gap-0 border-b border-parchment/30 pb-2"
-            onSubmit={(e) => e.preventDefault()}
-          >
-            <label className="sr-only" htmlFor="nl">
-              {footer.newsletter.placeholder}
-            </label>
-            <input
-              id="nl"
-              type="email"
-              required
-              placeholder={footer.newsletter.placeholder}
-              className="t-body min-w-0 flex-1 border-0 bg-transparent text-parchment outline-none placeholder:text-parchment/45"
-            />
-            <button type="submit" className="t-micro cursor-pointer px-2 text-gold hover:text-parchment">
-              {footer.newsletter.action}
-            </button>
-          </form>
-        </div>
-
-        <div className="lg:col-span-1" aria-hidden="true" />
-
-        {footer.columns.map((col) => (
-          <nav key={col.title} className="min-w-[8rem] lg:col-span-2">
-            <h3 data-reveal className="t-micro text-gold">
-              {col.title}
-            </h3>
-            <ul className="mt-[clamp(10px,1.2vw,18px)] space-y-[0.55em]">
-              {col.links.map((link) => (
-                <li key={link} data-reveal>
-                  <a
-                    href="#top"
-                    className="t-body text-parchment/75 transition-colors duration-300 hover:text-parchment"
-                  >
-                    {link}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        ))}
-      </div>
-
-      <div className="mt-[clamp(36px,6vh,88px)] h-px w-full bg-parchment/20" />
-
-      <div className="mt-[clamp(16px,2.4vh,30px)] flex flex-wrap items-end justify-between gap-6">
-        <p className="t-body-xs max-w-[46ch] text-parchment/55">{footer.legal}</p>
-        <p className="t-micro text-parchment/45">
-          © {new Date().getFullYear()} {brand.name} {brand.sub} — {brand.founded}
-        </p>
-      </div>
-
-      <p
-        className="pointer-events-none mt-[clamp(20px,4vh,54px)] select-none font-display uppercase leading-[0.8] text-parchment/10"
-        style={{fontSize: 'clamp(3.5rem, 19vw, 21rem)', letterSpacing: '-0.01em'}}
-        aria-hidden="true"
-      >
-        {brand.name}
-      </p>
-    </footer>
-  );
+  return <footer id="footer" ref={anchor('footer')} className="relative z-40 mt-20 bg-oxblood text-parchment" style={{paddingLeft:PAD_L,paddingRight:PAD_R,paddingTop:70,paddingBottom:32}}>
+    <div className="grid gap-10 lg:grid-cols-2"><div><p className="campaign-kicker mb-5">Next stop: your everyday.</p><h2 className="t-display">Take a little<br/>New York.</h2><p className="t-body text-parchment mt-6 max-w-md">Big plans. Favorite things. A patch set that feels like you.</p><a className="btn-ink mt-8 inline-flex" style={{background:'#ffcf32',color:'#15202a'}} href={SHOP_URL}><span className="t-micro">Shop the NYC Collection</span></a></div>
+    <div className="bg-parchment text-ink p-7"><h3 className="t-display-sm mb-7">Before you make it yours</h3>
+    <details className="faq"><summary>How do I attach the patches?</summary><p className="t-body-xs">The product listing describes sewing or ironing onto suitable fabrics. Check the patch instructions and the care label on your item before applying heat.</p></details>
+    <details className="faq"><summary>Can I use them on laptops or water bottles?</summary><p className="t-body-xs">Try a fabric laptop sleeve, bottle sling, or notebook cover. Direct hard-surface placement would need suitable adhesive purchased separately; included adhesive and water resistance are not verified. Never iron a device or bottle.</p></details>
+    <details className="faq"><summary>Do I need a connection to Google?</summary><p className="t-body-xs">No insider story needed for this look. This campaign is for anyone who loves New York and making their things their own.</p></details>
+    <details className="faq"><summary>Where can I buy the set?</summary><p className="t-body-xs">Our shop links open the official Google Merch Shop. Search for the New York Campus Patch Set and check current availability, price, and delivery options there.</p></details></div></div>
+    <div className="mt-16 border-t border-parchment/30 pt-6 flex flex-wrap justify-between gap-6"><p className="text-sm max-w-2xl">{footer.legal}</p><a href="#top" className="text-sm underline">Back to top</a></div>
+    <p className="text-sm mt-5">Product photo: <a className="underline" href="https://your.merch.google/nyc-campus-patch.html">Google Merch Shop</a> · City photo: <a className="underline" href="https://unsplash.com/photos/a-taxi-cab-driving-down-a-street-next-to-tall-buildings-jW310-nIQqo">Y M / Unsplash</a></p>
+    <p className="font-display text-[clamp(3rem,13vw,12rem)] leading-none mt-12 text-parchment/25" aria-hidden="true">{brand.founded}</p>
+  </footer>;
 }

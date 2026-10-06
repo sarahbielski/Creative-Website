@@ -125,7 +125,7 @@ export function Preloader({onDone}: {onDone: () => void}) {
           <div ref={bar} className="h-full w-full origin-left bg-gold" style={{transform: 'scaleX(0)'}} />
         </div>
         <p className="t-micro mt-3 flex justify-between text-parchment/60">
-          <span>Decanting</span>
+          <span>Next stop: NYC</span>
           <span ref={counter}>000</span>
         </p>
       </div>

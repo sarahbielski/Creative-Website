@@ -21,9 +21,9 @@ export function Estate() {
       <div className="relative">
         <div ref={image} className="will-change-transform">
           <Figure
-            src="/img/vineyard.jpg"
-            alt="Block IX at dusk"
-            hint="Vineyard at dusk"
+            src="/img/nyc-street.jpg"
+            alt="Yellow taxi crossing a lively New York City intersection"
+            hint="New York City"
             tone="dark"
             className="aspect-[2/1] w-full"
           />

@@ -2,7 +2,6 @@ import {useLayoutEffect, useRef} from 'react';
 import {hero} from '../../lib/content';
 import {anchor, gsap, scrollTo} from '../../lib/scroll';
 import {GiantType} from '../GiantType';
-import {Seal} from '../Seal';
 import {Section} from '../Section';
 
 /**
@@ -53,32 +52,20 @@ export function Hero({entered}: {entered: boolean}) {
         // The display type sits low on purpose, so it crosses the pinned
         // bottle nearer its waist than its shoulder. The block itself is a bit
         // over half the viewport tall, so the top padding is what places it.
-        paddingTop: 'clamp(225px, 38vh, 480px)',
+        paddingTop: 'clamp(180px, 22vh, 240px)',
         paddingBottom: 'clamp(28px, 6vh, 80px)',
         paddingRight: 'calc(var(--frame) + clamp(16px, 2.4vw, 46px))',
       }}
     >
       <div ref={root} className="relative">
-        <span
-          data-intro-seal
-          className="absolute z-[2] block h-[clamp(68px,8vw,146px)] w-[clamp(68px,8vw,146px)]"
-          // CABERNET is fitted and centred, so the B — its third letter of
-          // eight — centres near 37% of the block, and the seal sits half its
-          // own width left of that. Vertically it rides almost entirely above
-          // the type: only the bottom of the disc crosses the cap line, which
-          // is the relationship the reference's seal has with its lettering.
-          style={{left: '32.5%', top: '-40%'}}
-        >
-          <Seal className="h-full w-full" />
-        </span>
-
+        <p data-intro-fade className="campaign-kicker hero-kicker">Google x NYC Patch Set · A little city. A lot of you.</p>
         <GiantType
           as="h1"
           lines={hero.giant}
           masked
           align="center"
           from={0}
-          to={-0.34}
+          to={0}
           fill={0.995}
         />
 
@@ -94,11 +81,15 @@ export function Hero({entered}: {entered: boolean}) {
           aria-hidden="true"
         />
 
+        <div data-intro-fade className="hero-intro">
+          <p className="t-body">Turn everyday essentials into your own little piece of New York.</p>
+          <a className="btn-ink mt-5 inline-flex" href="#alloc"><span className="t-micro">Shop the NYC Collection</span></a>
+        </div>
         <button
           type="button"
           data-intro-fade
           onClick={() => scrollTo('#wine')}
-          className="group absolute -bottom-[clamp(20px,3.2vh,42px)] left-0 flex cursor-pointer items-center gap-3 text-ink"
+          className="group absolute -bottom-[56px] left-0 flex cursor-pointer items-center gap-3 text-ink"
         >
           <span className="relative block h-[26px] w-px overflow-hidden bg-ink/25">
             <span className="absolute inset-x-0 top-0 h-1/2 animate-[cue_2.4s_ease-in-out_infinite] bg-ink" />

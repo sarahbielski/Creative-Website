@@ -7,7 +7,7 @@
  * already in memory, so there is no second request and no cache guesswork.
  */
 
-const SOURCE = `${import.meta.env.BASE_URL}model/wine.glb`;
+const SOURCE = `${import.meta.env.BASE_URL}img/nyc-patches.png`;
 
 export const modelState = {
   loaded: 0,
@@ -19,7 +19,7 @@ export const modelState = {
     if (modelState.done) return 1;
     if (modelState.total > 0) return Math.min(1, modelState.loaded / modelState.total);
     // No content-length (dev server, gzip): approximate against the known size.
-    return Math.min(0.92, modelState.loaded / 2_400_000);
+    return Math.min(0.92, modelState.loaded / 840_000);
   },
 };
 

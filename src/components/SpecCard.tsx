@@ -29,8 +29,8 @@ export function SpecCard({specs, rows}: {specs: Spec[]; rows?: number}) {
               <p className="t-figure shrink-0 text-ink">{spec.value}</p>
               <p className="t-body-xs max-w-[24ch] pt-[2px]">
                 {spec.note}{' '}
-                <a href="#top" className="link-rule t-micro ml-[2px] align-baseline">
-                  Read more
+                <a href="#alloc" className="link-rule t-micro ml-[2px] align-baseline">
+                  Explore
                 </a>
               </p>
             </div>

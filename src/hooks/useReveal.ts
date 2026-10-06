@@ -12,6 +12,11 @@ import {gsap, ScrollTrigger, view} from '../lib/scroll';
 export function useRevealSystem(enabled: boolean) {
   useLayoutEffect(() => {
     if (!enabled) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set('[data-reveal]', {opacity:1,y:0});
+      gsap.set('[data-lines] .line-mask > span', {yPercent:0,y:0});
+      return;
+    }
 
     const ctx = gsap.context(() => {
       // Start state before any trigger can fire, or elements already past the
@@ -82,7 +87,7 @@ export function useParallax(
 ) {
   useLayoutEffect(() => {
     const el = ref.current;
-    if (!el || !enabled) return;
+    if (!el || !enabled || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo(

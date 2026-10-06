@@ -1,5 +1,5 @@
 import {useRef} from 'react';
-import {pairings} from '../../lib/content';
+import {pairings, SHOP_URL} from '../../lib/content';
 import {useParallax} from '../../hooks/useReveal';
 import {Figure} from '../Figure';
 import {Lines, Section} from '../Section';
@@ -13,10 +13,10 @@ export function Pairings() {
       <div className="grid w-full grid-cols-1 items-center gap-[clamp(24px,4vw,70px)] lg:grid-cols-12">
         <div ref={photo} className="lg:col-span-6">
           <Figure
-            src="/img/pairing.jpg"
-            alt="Rib of beef, bone marrow butter and a glass of Nocturne Reserve"
-            hint="Table, overhead"
-            className="aspect-[3/2] w-full"
+            src="/img/nyc-patches.png"
+            alt="Google New York Campus Patch Set: NYC, pizza, and New York designs"
+            hint="The complete patch set"
+            className="aspect-square w-full" fit="contain"
           />
         </div>
 
@@ -34,9 +34,15 @@ export function Pairings() {
             {pairings.body}
           </p>
 
-          <button data-reveal type="button" className="btn-ink mt-[clamp(18px,2.2vw,32px)]">
+          <div className="style-list">
+            <div><h3>Backpacks & totes</h3><p>Personalize compatible fabric. Follow the patch and bag care instructions.</p></div>
+            <div><h3>Laptops & notebooks</h3><p>Make a fabric laptop sleeve or notebook cover your canvas.</p></div>
+            <div><h3>Water bottles</h3><p>Dress up a fabric bottle sling. A little NYC for your daily refill.</p></div>
+            <div><h3>More ways to make it yours</h3><p>Try a cap, denim jacket, or pencil pouch. Your rotation, remixed.</p></div>
+          </div>
+          <a href={SHOP_URL} data-reveal className="btn-ink mt-[clamp(18px,2.2vw,32px)]">
             <span className="t-micro">{pairings.action}</span>
-          </button>
+          </a>
         </div>
       </div>
     </Section>

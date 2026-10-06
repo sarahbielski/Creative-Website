@@ -1,146 +1,41 @@
-/**
- * Every word on the site lives here. Sections read from this file so the copy
- * can be rewritten without touching a single layout or motion decision.
- */
-
+/** Campaign copy for the Google x NYC student relaunch concept. */
+export const SHOP_URL = 'https://shop.merch.google/';
+export const PRODUCT_IMAGE = '/img/nyc-patches.png';
 export const brand = {
-  name: 'Nocturne',
-  sub: 'Estate & Cellars',
-  founded: 'MCMVIII',
-  cta: 'Reserve a case',
-  nav: ['The Wine', 'The Estate', 'Cellar Door', 'Allocation', 'Journal'],
+  name: 'NYC', sub: 'Google x NYC Patch Set', founded: 'NEW YORK, YOUR WAY',
+  cta: 'Shop the NYC Collection',
+  nav: ['The patch set', 'Why patches?', 'Meet the designs', 'Style it your way', 'The city'],
 } as const;
-
-export const hero = {
-  // Two short lines on purpose. Every line is fitted to the panel, so fewer
-  // characters means a bigger face — which is where the reference gets its
-  // weight from.
-  giant: ['Cabernet', 'Sauvignon'],
-  cue: 'Scroll to decant',
-} as const;
-
+export const navTargets = ['#wine', '#notes', '#alloc', '#pairings', '#estate'];
+export const hero = {giant: ['Your city.', 'Your way.'], cue: 'Meet your next everyday obsession'} as const;
 export const wine = {
-  eyebrow: 'Single vineyard, Block ix',
-  headline: ['Reserve', 'MMXVIII'],
-  body: 'Nocturne Reserve comes off two and a half hectares of forty-year-old vines on the cool eastern slope of Block IX, picked in three passes across nine nights in March. Fermented on native yeast in open oak, basket-pressed, then left alone for twenty-two months in French barrique — a third of it new. Unfined, unfiltered, bottled by gravity.',
-  action: 'Add to cellar',
+  eyebrow: 'Google x NYC Patch Set', headline: ['Small patches.', 'Big city energy.'],
+  body: 'A little New York for the things you take everywhere. Three bold patches turn your everyday essentials into a personal love letter to the city.',
+  action: 'Meet the designs',
 } as const;
-
-export type Spec = {
-  key: string;
-  label: string;
-  value: string;
-  note: string;
-};
-
+export type Spec = {key: string; label: string; value: string; note: string};
 export const specs: Spec[] = [
-  {
-    key: 'ABV',
-    label: 'Alcohol by volume',
-    value: '14.5%',
-    note: 'Warm but composed. The fruit carries the alcohol rather than the other way round.',
-  },
-  {
-    key: 'OAK',
-    label: 'Months in French barrique',
-    value: '22',
-    note: 'One third new Allier, the rest second and third fill. Coopered in Burgundy, toasted long and low.',
-  },
-  {
-    key: 'PH',
-    label: 'Total acidity 5.9 g/L',
-    value: '3.62',
-    note: 'Cold nights hold the line. This is a wine built to sit in a dark room for a decade.',
-  },
+  {key:'THE SET',label:'Three ways to say New York',value:'03',note:'NYC lettering. A pizza slice. A New York wordmark. Pick your favorite—or go all in.'},
+  {key:'THE MOOD',label:'A city that feels like you',value:'NY',note:'For the born-here, moved-here, and wish-I-were-here crowd.'},
+  {key:'THE MOVE',label:'Make the everyday personal',value:'YOU',note:'Same backpack. Entirely different energy. No Google connection required.'},
 ];
-
 export const finish = {
-  giant: 'Long Finish',
-  videoCaption: ['Hear it from our winemaker,', 'Élise Marchand'],
-  lead: 'Dense and unhurried. It opens on black fruit — cassis, damson, the skin of a bruised plum — then turns savoury: graphite, dried bay, the inside of a cigar box. The tannin is fine-grained and arrives late, drawing the finish out well past a minute.',
-  styleHeading: 'Style',
-  styleBody: [
-    'In the old classification this would sit somewhere between claret and cult — too structured to drink young, too generous to keep waiting on. We make nine hundred cases and we do not make more.',
-    'Serve at sixteen degrees, in a glass with room to breathe. Decant an hour ahead. Open the second bottle before you finish the first.',
-  ],
+  giant: 'City on repeat', videoCaption: ['From the first lecture', 'to the last slice.'],
+  lead: 'Your 9 a.m. class. Your favorite corner. Your way-too-late train home. Take a piece of the city along for all of it.',
+  styleHeading:'Not just a souvenir.',
+  styleBody:['A tiny detail that says a lot about you. Color, texture, and a little NYC attitude.', 'Google made the patches. You make them yours.'],
 } as const;
-
-export type Note = {
-  title: string;
-  body: string;
-  glyph: string;
-  tone: 'wine' | 'ink';
-};
-
+export type Note = {title:string;body:string;glyph:string;tone:'wine'|'ink'};
 export const notes: Note[] = [
-  {
-    title: 'Blackcurrant',
-    body: 'Cassis and damson skin, picked at the last possible moment before the acid drops away.',
-    glyph: '✦',
-    tone: 'wine',
-  },
-  {
-    title: 'Violet — Iris',
-    body: 'A floral top note that only shows up twenty minutes into the glass. Wait for it.',
-    glyph: '❈',
-    tone: 'wine',
-  },
-  {
-    title: 'Cedar — Clove',
-    body: 'Twenty-two months in Allier oak. Cigar box, dried bay, a thread of sweet spice underneath it all.',
-    glyph: '❖',
-    tone: 'ink',
-  },
+  {title:'Stand out.',body:'Give your go-to bag a look that is unmistakably yours. Your style deserves more than the default.',glyph:'01',tone:'wine'},
+  {title:'Take NYC along.',body:'Across campus. Across the river. Back home for break. Keep your favorite city close.',glyph:'02',tone:'wine'},
+  {title:'Make it a mix.',body:'Go all three on one bag, or spread the city love across your everyday rotation.',glyph:'03',tone:'ink'},
 ];
-
-export type Format = {
-  id: string;
-  caption: string;
-  detail: string;
-  /** The live 3D bottle docks into this slot instead of loading an image. */
-  live?: boolean;
-  src?: string;
-  /** Height as a fraction of the lineup row, so the family scales together. */
-  h: number;
-};
-
-export const allocation = {
-  eyebrow: 'Allocation:',
-  giant: 'Nine Hundred',
-  giantSub: 'Cases',
-  formats: [
-    { id: 'crate', caption: 'Original wood', detail: 'Twelve', src: '/img/format-crate.png', h: 0.52 },
-    { id: 'magnum', caption: '1.5L magnum', detail: 'Forty made', src: '/img/format-magnum.png', h: 0.98 },
-    { id: 'bottle', caption: '750ml', detail: 'The release', live: true, h: 0.82 },
-    { id: 'half', caption: '375ml half', detail: 'Cellar door only', src: '/img/format-half.png', h: 0.6 },
-    { id: 'case', caption: 'Six-bottle case', detail: 'Sealed', src: '/img/format-case.png', h: 0.46 },
-  ] as Format[],
-} as const;
-
+export type Format = {id:string;caption:string;detail:string;live?:boolean;src?:string;h:number};
+export const allocation = {eyebrow:'Meet your city icons',giant:'Three patches.',giantSub:'All NYC.',formats:[] as Format[]} as const;
 export const pairings = {
-  eyebrow: 'At the table',
-  headline: ['Wine speaks.', 'Tables listen.'],
-  body: 'It wants fat and salt and time. Rib of beef over coals, bone marrow on burnt toast, a hard sheep cheese at the end of the night. Skip anything delicate — this wine will simply talk over it.',
-  action: 'See the pairings',
+  eyebrow:'Your stuff. Your signature.',headline:['Style it', 'your way.'],
+  body:'Backpacks for the commute. Laptop sleeves for the library. Notebook covers for the next big idea. Your everyday lineup, with a New York accent.',action:'Shop the NYC Collection',
 } as const;
-
-export const estate = {
-  eyebrow: 'The estate',
-  headline: ['Nine nights', 'of picking'],
-  body: 'Block IX sits four hundred metres up, facing east, on a seam of decomposed granite thin enough to keep the vines honest. Everything is picked at night and in the dark, into small crates, by the same twenty people who have done it for eleven years.',
-} as const;
-
-export const footer = {
-  columns: [
-    { title: 'Visit', links: ['Cellar door', 'Tastings', 'The long table', 'Find us'] },
-    { title: 'Buy', links: ['Allocation list', 'Trade enquiries', 'Stockists', 'Gift a case'] },
-    { title: 'Read', links: ['Journal', 'Vintage notes', 'Press', 'Our practice'] },
-  ],
-  newsletter: {
-    title: 'The allocation list',
-    body: 'One letter a year, sent the week the wine is released. Nothing else, ever.',
-    placeholder: 'Your email',
-    action: 'Join',
-  },
-  legal: 'Please enjoy responsibly. You must be of legal drinking age in your country to purchase.',
-} as const;
+export const estate = {eyebrow:'Five boroughs. Endless versions of you.',headline:['You don’t have to', 'be from here.'],body:'You just have to feel it. The late-night slices. The big plans. The city that makes you want to be a little more you.'} as const;
+export const footer = {legal:'Independent student marketing concept. Not an official Google campaign. Google and product imagery belong to their respective owners.'} as const;

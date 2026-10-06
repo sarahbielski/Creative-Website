@@ -22,9 +22,9 @@ export function Wine() {
             {wine.body}
           </p>
 
-          <button data-reveal type="button" className="btn-ink mt-[clamp(20px,2.4vw,34px)]">
+          <a href="#alloc" data-reveal className="btn-ink mt-[clamp(20px,2.4vw,34px)]">
             <span className="t-micro">{wine.action}</span>
-          </button>
+          </a>
         </div>
 
         {/* The empty middle is the bottle's. */}

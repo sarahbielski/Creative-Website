@@ -1,6 +1,6 @@
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {brand} from '../lib/content';
-import {gsap, lockScroll} from '../lib/scroll';
+import {brand, navTargets, SHOP_URL} from '../lib/content';
+import {gsap, lockScroll, scrollTo} from '../lib/scroll';
 
 function Wordmark({tone = 'ink'}: {tone?: 'ink' | 'parchment'}) {
   const color = tone === 'ink' ? 'text-ink' : 'text-parchment';
@@ -8,15 +8,15 @@ function Wordmark({tone = 'ink'}: {tone?: 'ink' | 'parchment'}) {
     <a href="#top" className={`block leading-none ${color}`} aria-label={`${brand.name} — home`}>
       <span
         className="t-logo block"
-        style={{fontSize: 'clamp(15px, 1.5vw, 21px)', letterSpacing: '0.04em'}}
+        style={{fontSize: 'clamp(22px, 2vw, 30px)', letterSpacing: '0.04em'}}
       >
         {brand.name}
       </span>
       <span
         className="mt-[0.35em] block opacity-70"
-        style={{fontSize: '0.4375rem', letterSpacing: '0.34em', fontWeight: 500}}
+        style={{fontSize: '0.65rem', letterSpacing: '0.04em', fontWeight: 500}}
       >
-        {brand.sub.toUpperCase()}
+        GOOGLE X NYC
       </span>
     </a>
   );
@@ -108,7 +108,8 @@ function Rail({open, onToggle}: {open: boolean; onToggle: () => void}) {
 
       <button
         type="button"
-        aria-label="Search"
+        aria-label="Explore the patch designs"
+        onClick={() => scrollTo('#alloc')}
         className={`mt-[clamp(14px,1.4vw,20px)] cursor-pointer p-2 transition-colors duration-500 ${
           open ? 'text-parchment' : 'text-ink'
         }`}
@@ -179,27 +180,28 @@ function Overlay({open, onClose}: {open: boolean; onClose: () => void}) {
       className="fixed inset-0 z-[55]"
       style={{pointerEvents: open ? 'auto' : 'none'}}
       aria-hidden={!open}
+      inert={!open}
     >
       <div
         ref={sheet}
         className="absolute inset-0 bg-oxblood"
-        style={{transform: 'translateY(-100%)'}}
+        style={{transform: 'translateY(0)'}}
       >
         <div
           className="flex h-full flex-col justify-between"
           style={{
             padding:
-              'calc(var(--frame) + clamp(78px,10vh,130px)) calc(var(--frame) + var(--gutter)) calc(var(--frame) + clamp(28px,4vh,56px)) calc(var(--frame) + var(--rail) + clamp(10px,1.4vw,26px))',
+              'calc(var(--frame) + clamp(130px,15vh,160px)) calc(var(--frame) + var(--gutter)) calc(var(--frame) + clamp(28px,4vh,56px)) calc(var(--frame) + var(--rail) + clamp(10px,1.4vw,26px))',
           }}
         >
           <nav>
             <ul className="space-y-[clamp(2px,0.6vh,10px)]">
-              {brand.nav.map((item) => (
+              {brand.nav.map((item, index) => (
                 <li key={item} className="menu-line overflow-hidden">
                   <span className="block">
                     <a
-                      href="#top"
-                      onClick={onClose}
+                      href={navTargets[index]}
+                      onClick={(event) => { event.preventDefault(); onClose(); window.setTimeout(() => scrollTo(navTargets[index]), 300); }}
                       className="t-display block text-parchment transition-colors duration-500 hover:text-gold"
                       style={{textTransform: 'none'}}
                     >
@@ -213,18 +215,18 @@ function Overlay({open, onClose}: {open: boolean; onClose: () => void}) {
 
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div className="menu-meta">
-              <p className="t-micro text-gold">Cellar door</p>
+              <p className="t-micro text-gold">New York, your way</p>
               <p className="t-body mt-3 max-w-[30ch] text-parchment/75">
-                Thursday to Sunday, eleven until late. Block IX, by the old chapel road.
+                For early classes, late trains, and everything you make of this city.
               </p>
             </div>
             <div className="menu-meta">
-              <p className="t-micro text-gold">Written to</p>
+              <p className="t-micro text-gold">Made for self-expression</p>
               <a
                 href="#top"
                 className="t-eyebrow mt-2 block text-parchment hover:text-gold"
               >
-                hello@nocturne.estate
+                Google x NYC Patch Set
               </a>
             </div>
           </div>
@@ -257,11 +259,11 @@ export function Chrome() {
         }}
       >
         <div className="pointer-events-auto">
-          <Wordmark tone={open ? 'parchment' : 'ink'} />
+          <Wordmark tone="ink" />
         </div>
 
-        <button
-          type="button"
+        <a
+          href={SHOP_URL}
           className="btn-wine pointer-events-auto"
           style={{
             background: open ? 'var(--color-gold)' : undefined,
@@ -269,7 +271,7 @@ export function Chrome() {
           }}
         >
           <span className="t-micro">{brand.cta}</span>
-        </button>
+        </a>
       </header>
     </>
   );
