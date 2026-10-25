@@ -1,94 +1,52 @@
-import {Suspense, lazy, useCallback, useEffect, useLayoutEffect, useState} from 'react';
+import {useLayoutEffect, useState} from 'react';
 import {Chrome} from './components/Chrome';
 import {Frame} from './components/Frame';
-import {Preloader} from './components/Preloader';
-import {Allocation} from './components/sections/Allocation';
-import {Estate} from './components/sections/Estate';
-import {Finish} from './components/sections/Finish';
-import {Footer} from './components/sections/Footer';
-import {Hero} from './components/sections/Hero';
-import {Notes} from './components/sections/Notes';
-import {Pairings} from './components/sections/Pairings';
-import {Wine} from './components/sections/Wine';
+import {initMotion} from './lib/scroll';
 import {useReducedMotion} from './hooks/useReducedMotion';
-import {useRevealSystem} from './hooks/useReveal';
-import {probeTextures} from './lib/assets';
-import {loadModel} from './lib/model';
-import {initPointer} from './lib/pointer';
-import {ScrollTrigger, initMotion} from './lib/scroll';
 
-/**
- * three and drei are the bulk of the bundle, so the 3D stage is split out.
- * The frame, the type and the preloader paint from the small entry chunk while
- * it downloads alongside the model.
- */
-const Stage = lazy(() => import('./components/Stage'));
-
-export default function App() {
-  const reduced = useReducedMotion();
-  const [entered, setEntered] = useState(false);
-  const [modelUrl, setModelUrl] = useState<string | null>(null);
-
-  useLayoutEffect(() => {
-    probeTextures();
-    return initPointer();
-  }, []);
-
-  useLayoutEffect(() => initMotion(reduced), [reduced]);
-
-  useEffect(() => {
-    let live = true;
-    loadModel().then((url) => {
-      if (live) setModelUrl(url);
-    });
-    return () => {
-      live = false;
-    };
-  }, []);
-
-  useRevealSystem(entered);
-
-  // Type and photography both change how tall the page is. Re-measure once
-  // they have settled, or every trigger is anchored to the wrong pixel.
-  useEffect(() => {
-    if (!entered) return;
-    const refresh = () => ScrollTrigger.refresh();
-    document.fonts?.ready.then(refresh).catch(() => {});
-    const t = window.setTimeout(refresh, 600);
-    window.addEventListener('load', refresh);
-    return () => {
-      window.clearTimeout(t);
-      window.removeEventListener('load', refresh);
-    };
-  }, [entered]);
-
-  const onDone = useCallback(() => setEntered(true), []);
-
-  return (
-    <>
-      <Frame />
-
-      {modelUrl && (
-        <Suspense fallback={null}>
-          <Stage url={modelUrl} visible={entered} />
-        </Suspense>
-      )}
-
-      <Chrome />
-
-      <main id="top">
-        <Hero entered={entered} />
-        <Wine />
-        <Finish />
-        <Notes />
-        <Allocation />
-        <Pairings />
-        <Estate />
-      </main>
-
-      <Footer />
-
-      <Preloader onDone={onDone} />
-    </>
-  );
+const storage = [
+  {name:'Necklaces', title:'Support along the whole chain.', body:'Separate necklace lanes with small snap-close loops on both sides of each chain, repeated along its length. A dedicated pendant pocket helps limit swinging and contact with neighboring pieces.', detail:'Design priority: adjustable spacing for different lengths, with closures tested for repeated use.'},
+  {name:'Bracelets', title:'A secure lane of their own.', body:'A similar system of small snap-close supports holds chain bracelets along their length. Separate padded channels help keep bracelets from rubbing together.', detail:'Design priority: accommodate different chain widths without pulling on delicate links.'},
+  {name:'Studs & drops', title:'Every pair has a place.', body:'A padded pierced panel holds studs with their backs secured behind it. Individual covered channels support drop earrings so decorative elements do not swing against each other.', detail:'Design priority: room behind the panel for backs, plus a soft protective cover.'},
+  {name:'Hoops & bangles', title:'Turn the page. Make more room.', body:'An additional book-style storage page gives larger hoops and bangles their own padded spaces. Adjustable snap straps hold each piece separately beneath a protective divider.', detail:'Design priority: test thickness and fit so the organizer closes without squeezing jewelry.'},
+];
+const tasks = ['Place each necklace in its own lane','Fasten supports without tensioning the chains','Secure bracelet straps and earring backs','Turn the bangle page and close the protective dividers','Check that the case closes without pressure'];
+function conceptImage() {
+ const lanes = [130,215,300].map(x=>`<rect x="${x-27}" y="113" width="68" height="260" rx="22" fill="#f5e8e4"/><path d="M${x-9} 135 V315 Q${x+6} 355 ${x+21} 315 V135" fill="none" stroke="#b48b45" stroke-width="3"/>${[155,220,285].map(y=>`<rect x="${x-19}" y="${y}" width="19" height="11" rx="5" fill="#a4778d"/><circle cx="${x-10}" cy="${y+5}" r="3" fill="#ead7a0"/><rect x="${x+13}" y="${y}" width="19" height="11" rx="5" fill="#a4778d"/><circle cx="${x+23}" cy="${y+5}" r="3" fill="#ead7a0"/>`).join('')}<circle cx="${x+6}" cy="333" r="9" fill="#d4b778"/>`).join('');
+ return 'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" width="900" height="570" viewBox="0 0 900 570"><rect width="900" height="570" rx="30" fill="#e7cfc5"/><ellipse cx="450" cy="480" rx="345" ry="33" fill="#71445e" opacity=".16"/><g transform="rotate(-3 450 285)"><rect x="70" y="65" width="760" height="410" rx="30" fill="#71445e"/><rect x="85" y="80" width="355" height="380" rx="20" fill="#fff5e9"/><rect x="450" y="80" width="365" height="380" rx="20" fill="#fff5e9"/>${lanes}<path d="M445 90 V450" stroke="#c99eab" stroke-width="4"/><rect x="475" y="110" width="310" height="115" rx="15" fill="#e8d5d9"/>${[510,565,620,675,730].map(x=>`<circle cx="${x}" cy="145" r="6" fill="#c29c58"/><circle cx="${x}" cy="177" r="6" fill="#c29c58"/>`).join('')}<rect x="475" y="242" width="310" height="190" rx="16" fill="#eee0ce"/><circle cx="555" cy="330" r="48" fill="none" stroke="#b48b45" stroke-width="7"/><circle cx="700" cy="330" r="37" fill="none" stroke="#b48b45" stroke-width="5"/><rect x="542" y="267" width="26" height="125" rx="9" fill="#a4778d"/><rect x="687" y="278" width="26" height="103" rx="9" fill="#a4778d"/><circle cx="555" cy="285" r="5" fill="#ead7a0"/><circle cx="700" cy="295" r="5" fill="#ead7a0"/><path d="M475 427 H785" stroke="#71445e" stroke-width="3" stroke-dasharray="6 7"/></g><text x="450" y="535" text-anchor="middle" font-family="Arial,sans-serif" font-size="15" fill="#71445e" letter-spacing="3">CONCEPT ILLUSTRATION · DESIGN UNDER DEVELOPMENT</text></svg>`);
+}
+const concept = conceptImage();
+export default function App(){
+ const reduced=useReducedMotion();
+ useLayoutEffect(()=>initMotion(reduced),[reduced]);
+ const [active,setActive]=useState(0);
+ const [checked,setChecked]=useState<number[]>([]);
+ return <><style>{`
+ :root{--color-oxblood:#71445e;--color-wine:#71445e;--color-parchment:#fff8ee;--color-gold:#e4bc72;--color-ink:#342b32}
+ .venture{position:relative;z-index:10;margin:var(--frame);margin-left:calc(var(--frame) + var(--rail));padding:0 clamp(18px,5vw,80px)}
+ .venture section{padding:90px 0;border-bottom:1px solid #71445e44;scroll-margin-top:115px}
+ .venture h1,.venture h2{font-family:var(--font-display);text-transform:uppercase;line-height:1.02;letter-spacing:-.015em}
+ .venture h1{font-size:clamp(58px,10vw,155px);margin:22px 0}.venture h1 span{color:#71445e}
+ .venture h2{font-size:clamp(38px,6vw,84px);margin:15px 0 26px}.venture h3{font-size:clamp(23px,3vw,36px);line-height:1.15;margin:14px 0}
+ .venture p{line-height:1.7;max-width:65ch;font-size:17px}.eyeline{font-size:11px!important;letter-spacing:.17em;text-transform:uppercase;font-weight:600}
+ .vhero{padding-top:180px!important}.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}.vimage{width:100%;border-radius:16px;box-shadow:12px 12px 0 #e4bc72;margin:20px 0}
+ .vbutton,.vtabs button{display:inline-block;border:1px solid #71445e;padding:13px 20px;margin:8px 8px 8px 0;font-size:13px;font-weight:600;cursor:pointer;text-decoration:none;border-radius:2px}.vbutton,.vtabs button[aria-pressed=true]{background:#71445e;color:#fff8ee}.vtabs{display:flex;flex-wrap:wrap;margin:24px 0}.vdetail{padding:30px;background:#edddd9;border-radius:8px;min-height:240px}.vsmall{font-size:13px!important;opacity:.8;margin-top:18px}
+ .vcheck{display:flex;gap:14px;align-items:center;padding:18px 0;border-bottom:1px solid #71445e33;font-size:17px;cursor:pointer}.vcheck input{width:22px;height:22px;accent-color:#71445e;flex-shrink:0}.vprogress{width:100%;height:12px;accent-color:#71445e;margin:20px 0}
+ .vstats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:24px 0}.vstats div{padding:22px;background:#edddd9}.vstats strong{display:block;font-size:38px;font-family:var(--font-display)}
+ .venture details{border-top:1px solid #71445e55;padding:20px 0}.venture summary{cursor:pointer;font-weight:600}.venture details p{margin-top:15px}.venture a:focus-visible,.venture button:focus-visible{outline:3px solid #342b32;outline-offset:4px}
+ .vfooter{padding:35px 0 55px;font-size:12px}.vfooter a{text-decoration:underline}.venture figure{margin:0}.venture figcaption{font-size:12px;margin-top:20px}
+ @media(max-width:760px){.vgrid{grid-template-columns:1fr;gap:22px}.venture section{padding:65px 0}.vhero{padding-top:150px!important}.vstats{gap:7px}.vstats div{padding:12px}.vstats strong{font-size:30px}.vstats span{font-size:12px}.t-logo{font-size:17px!important}header .btn-wine{padding:10px!important}header .t-micro{font-size:9px!important}}
+ `}</style><Frame/><Chrome/><main id="top" className="venture">
+ <section className="vhero" id="organizer"><p className="eyeline">Jewelry Travel Organizer · A student venture concept</p><h1>Less untangling.<br/><span>More exploring.</span></h1><div className="vgrid"><div><p>Your favorite pieces deserve their own space. A compact organizer concept designed to protect jewelry, reduce tangling, and make packing feel simpler.</p><a className="vbutton" href="#alloc">Explore the storage</a><a className="vbutton" href="#packing">Try the packing checklist</a><p className="vsmall">Proposed design. Materials, dimensions, price, and performance are still being tested.</p></div><figure><img className="vimage" src={concept} width="900" height="570" alt="Illustrated open jewelry travel case with individual necklace lanes, repeated side snap supports, a stud panel, and a separate page for hoops and bangles"/><figcaption>Concept illustration: repeated necklace supports and a book-style storage page.</figcaption></figure></div></section>
+ <section id="alloc"><p className="eyeline">01 / A place for every piece</p><h2>Meet your<br/>packing system.</h2><p>Choose a jewelry type to explore the proposed storage. Each section is designed around a different shape, size, and way jewelry can move in transit.</p><div className="vtabs" role="group" aria-label="Choose jewelry storage">{storage.map((s,i)=><button key={s.name} aria-pressed={active===i} onClick={()=>setActive(i)}>{s.name}</button>)}</div><article className="vdetail" aria-live="polite"><p className="eyeline">{storage[active].name}</p><h3>{storage[active].title}</h3><p>{storage[active].body}</p><p className="vsmall">{storage[active].detail}</p></article></section>
+ <section id="packing"><div className="vgrid"><div><p className="eyeline">02 / Your pre-trip ritual</p><h2>Pack. Check.<br/>Take off.</h2><p>A little care before you leave can make unpacking easier. Try this interactive checklist to see how the proposed system would be used.</p><p className="vsmall">This checklist is a demonstration, not a guarantee against tangling or damage.</p></div><div><p aria-live="polite">{checked.length} of {tasks.length} steps checked{checked.length===tasks.length?' — ready for a final fit check.':''}</p><progress className="vprogress" max={tasks.length} value={checked.length} aria-label="Packing checklist progress"/>{tasks.map((task,i)=><label className="vcheck" key={task}><input type="checkbox" checked={checked.includes(i)} onChange={()=>setChecked(v=>v.includes(i)?v.filter(n=>n!==i):[...v,i])}/><span>{task}</span></label>)}<button className="vbutton" onClick={()=>setChecked([])}>Reset checklist</button></div></div></section>
+ <section id="approach"><p className="eyeline">03 / Designed around the details</p><h2>Small closures.<br/>Big priorities.</h2><p>Our mission is to help travelers protect, organize, and easily access their jewelry with a compact, reliable organizer designed to reduce tangling.</p><div className="vstats"><div><strong>80</strong><span>competitor reviews collected</span></div><div><strong>7</strong><span>reported faulty snaps</span></div><div><strong>14</strong><span>classifications checked</span></div></div><p>That feedback makes closure durability a development priority. Next steps include repeated snap testing, fit checks with different jewelry lengths, and a side-by-side packing demonstration against a basic pouch.</p><p className="vsmall">Figures from the founder’s collected sample of one competing product: 59 positive, 15 mixed, and 6 negative reviews. These are not reviews of this concept and do not represent all consumers.</p><a className="vbutton" href="https://www.amazon.com/dp/B0GDXTQCJW" target="_blank" rel="noopener noreferrer">View the researched competitor</a></section>
+ <section id="connect"><p className="eyeline">04 / Weekend away or once-in-a-lifetime trip</p><h2>Keep the memories.<br/>Skip the knot.</h2><p>For jewelry wearers who value organization, convenience, and protecting meaningful pieces. The initial audience is U.S. online shoppers, with gift buyers as a secondary audience.</p><h3>Follow the founder</h3><p>Connect with Sarah Bielski as this student venture takes shape.</p><a className="vbutton" href="https://www.instagram.com/sarahbielskii/" target="_blank" rel="noopener noreferrer">Instagram ↗</a><a className="vbutton" href="https://www.linkedin.com/in/sarah-bielski-6005893bb/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a><div style={{marginTop:35}}>{[
+ ['Can I buy it now?','Not yet. This is a student marketing venture and proposed product design. There is no checkout or order collection on this site.'],
+ ['Is it guaranteed to prevent tangles?','No. Separate lanes and repeated supports are design ideas intended to reduce movement and tangling. The design needs physical testing before any performance claims can be made.'],
+ ['Will long necklaces and larger bangles fit?','Adjustable supports and an additional storage page are proposed to improve fit. Final dimensions and supported jewelry sizes will depend on prototype testing.'],
+ ['What makes durability a priority?','Faulty snaps appeared in the collected competitor reviews. Repeated closure tests, secure attachment points, and protective dividers are planned design checks.']
+ ].map(([q,a])=><details key={q}><summary>{q}</summary><p>{a}</p></details>)}</div></section>
+ <footer className="vfooter">Jewelry / Journey · Working concept name · Student venture by Sarah Bielski. <a href="#top">Back to top ↑</a></footer>
+ </main></>;
 }
