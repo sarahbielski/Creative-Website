@@ -1,5 +1,7 @@
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
-import {brand, navTargets, SHOP_URL} from '../lib/content';
+const brand = {name: 'JEWELRY / JOURNEY', cta: 'Explore the concept', nav: ['The organizer', 'Storage details', 'Travel checklist', 'Our approach', 'Connect']};
+const navTargets = ['#organizer', '#alloc', '#packing', '#approach', '#connect'];
+const SHOP_URL = '#alloc';
 import {gsap, lockScroll, scrollTo} from '../lib/scroll';
 
 function Wordmark({tone = 'ink'}: {tone?: 'ink' | 'parchment'}) {
@@ -16,7 +18,7 @@ function Wordmark({tone = 'ink'}: {tone?: 'ink' | 'parchment'}) {
         className="mt-[0.35em] block opacity-70"
         style={{fontSize: '0.65rem', letterSpacing: '0.04em', fontWeight: 500}}
       >
-        GOOGLE X NYC
+        TRAVEL ORGANIZER
       </span>
     </a>
   );
@@ -108,7 +110,7 @@ function Rail({open, onToggle}: {open: boolean; onToggle: () => void}) {
 
       <button
         type="button"
-        aria-label="Explore the patch designs"
+        aria-label="Explore jewelry storage"
         onClick={() => scrollTo('#alloc')}
         className={`mt-[clamp(14px,1.4vw,20px)] cursor-pointer p-2 transition-colors duration-500 ${
           open ? 'text-parchment' : 'text-ink'
@@ -215,18 +217,18 @@ function Overlay({open, onClose}: {open: boolean; onClose: () => void}) {
 
           <div className="flex flex-wrap items-end justify-between gap-8">
             <div className="menu-meta">
-              <p className="t-micro text-gold">New York, your way</p>
+              <p className="t-micro text-gold">Your jewelry. Its own space.</p>
               <p className="t-body mt-3 max-w-[30ch] text-parchment/75">
-                For early classes, late trains, and everything you make of this city.
+                Thoughtful storage for weekends away and the pieces you love.
               </p>
             </div>
             <div className="menu-meta">
-              <p className="t-micro text-gold">Made for self-expression</p>
+              <p className="t-micro text-gold">A student venture concept</p>
               <a
                 href="#top"
                 className="t-eyebrow mt-2 block text-parchment hover:text-gold"
               >
-                Google x NYC Patch Set
+                Jewelry Travel Organizer
               </a>
             </div>
           </div>
