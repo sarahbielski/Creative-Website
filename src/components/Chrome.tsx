@@ -1,13 +1,16 @@
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
-const brand = {name: 'JEWELRY / JOURNEY', cta: 'Explore the concept', nav: ['The organizer', 'Storage details', 'Travel checklist', 'Our approach', 'Connect']};
-const navTargets = ['#organizer', '#alloc', '#packing', '#approach', '#connect'];
-const SHOP_URL = '#alloc';
+const brand = {name: 'JEWELRY / JOURNEY', cta: 'View pricing · $49', nav: ['The organizer', 'Products & pricing', 'Storage details', 'Travel checklist', 'Our approach', 'Connect']};
+const home = import.meta.env.BASE_URL;
+const onPricing = new URLSearchParams(window.location.search).get('page') === 'pricing';
+const homeSection = (hash: string) => onPricing ? home + hash : hash;
+const navTargets = [homeSection('#organizer'), home + '?page=pricing', homeSection('#alloc'), homeSection('#packing'), homeSection('#approach'), homeSection('#connect')];
+const SHOP_URL = home + '?page=pricing';
 import {gsap, lockScroll, scrollTo} from '../lib/scroll';
 
 function Wordmark({tone = 'ink'}: {tone?: 'ink' | 'parchment'}) {
   const color = tone === 'ink' ? 'text-ink' : 'text-parchment';
   return (
-    <a href="#top" className={`block leading-none ${color}`} aria-label={`${brand.name} — home`}>
+    <a href={homeSection('#top')} className={`block leading-none ${color}`} aria-label={`${brand.name} — home`}>
       <span
         className="t-logo block"
         style={{fontSize: 'clamp(22px, 2vw, 30px)', letterSpacing: '0.04em'}}
@@ -111,7 +114,7 @@ function Rail({open, onToggle}: {open: boolean; onToggle: () => void}) {
       <button
         type="button"
         aria-label="Explore jewelry storage"
-        onClick={() => scrollTo('#alloc')}
+        onClick={() => onPricing ? window.location.assign(home + '#alloc') : scrollTo('#alloc')}
         className={`mt-[clamp(14px,1.4vw,20px)] cursor-pointer p-2 transition-colors duration-500 ${
           open ? 'text-parchment' : 'text-ink'
         }`}
@@ -190,7 +193,7 @@ function Overlay({open, onClose}: {open: boolean; onClose: () => void}) {
         style={{transform: 'translateY(0)'}}
       >
         <div
-          className="flex h-full flex-col justify-between"
+          className="flex h-full flex-col justify-between overflow-y-auto"
           style={{
             padding:
               'calc(var(--frame) + clamp(130px,15vh,160px)) calc(var(--frame) + var(--gutter)) calc(var(--frame) + clamp(28px,4vh,56px)) calc(var(--frame) + var(--rail) + clamp(10px,1.4vw,26px))',
@@ -203,9 +206,9 @@ function Overlay({open, onClose}: {open: boolean; onClose: () => void}) {
                   <span className="block">
                     <a
                       href={navTargets[index]}
-                      onClick={(event) => { event.preventDefault(); onClose(); window.setTimeout(() => scrollTo(navTargets[index]), 300); }}
+                      onClick={(event) => { if(navTargets[index].startsWith('#')) { event.preventDefault(); onClose(); window.setTimeout(() => scrollTo(navTargets[index]), 300); } }}
                       className="t-display block text-parchment transition-colors duration-500 hover:text-gold"
-                      style={{textTransform: 'none'}}
+                      style={{textTransform: 'none', fontSize:'clamp(24px,5.5vh,64px)', lineHeight:1.14}}
                     >
                       {item}
                     </a>
@@ -225,7 +228,7 @@ function Overlay({open, onClose}: {open: boolean; onClose: () => void}) {
             <div className="menu-meta">
               <p className="t-micro text-gold">A student venture concept</p>
               <a
-                href="#top"
+                href={homeSection('#top')}
                 className="t-eyebrow mt-2 block text-parchment hover:text-gold"
               >
                 Jewelry Travel Organizer
