@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "1.0",
+  "projectName": "Sarah’s Jewelry Travel Organizer",
+  "modelName": "Sarah’s Jewelry Travel Organizer",
+  "modelType": "organizer",
+  "confirmedAt": "2026-11-05T18:51:41.560Z",
+  "dimensions": {
+    "width": 44.80000019073486,
+    "height": 24,
+    "depth": 9.428300614004359,
+    "units": "cm"
+  },
+  "geometryUnits": "meters",
+  "coordinateSystem": "Y-up",
+  "camera": {
+    "position": [
+      0.021067960006671733,
+      0.01856566050436694,
+      0.1267808690585671
+    ],
+    "target": [
+      -0.010999999046325684,
+      0,
+      0.042391503129626446
+    ],
+    "projection": "PerspectiveCamera"
+  },
+  "background": "#eae4dc",
+  "lighting": "soft",
+  "description": "Tablet-sized leather folio with velvet lining, paired plastic chain-retention clips, dedicated earring storage and a protective center page. Concept only; durability and retention are untested.",
+  "files": {
+    "model": "model.glb",
+    "project": "project.json",
+    "preview": "preview.png",
+    "instructions": "README.txt"
+  },
+  "sha256": "92ed8c9ea0580d01dfb0be490728614bcfaa819a59e2402f116ce7a2688592a0",
+  "meshCount": 701
+}
