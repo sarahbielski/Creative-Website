@@ -1,5 +1,5 @@
 import {useEffect, useLayoutEffect, useRef, useState} from 'react';
-const brand = {name: 'JEWELRY / JOURNEY', cta: 'View pricing · $49', nav: ['The organizer', 'Products & pricing', 'Storage details', 'Travel checklist', 'Our approach', 'Connect']};
+const brand = {name: 'Jewel Journal', cta: 'View pricing · $49', nav: ['The organizer', 'Products & pricing', 'Storage details', 'Travel checklist', 'Our approach', 'Connect']};
 const home = import.meta.env.BASE_URL;
 const onPricing = new URLSearchParams(window.location.search).get('page') === 'pricing';
 const homeSection = (hash: string) => onPricing ? home + hash : hash;
