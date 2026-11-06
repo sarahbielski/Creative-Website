@@ -12,3 +12,15 @@ html body{overflow-x:clip}
 body header:before{content:'';position:absolute;inset:-20px -10px;z-index:-1;background:linear-gradient(#fff8ee 70%,#fff8ee00);pointer-events:none}
 @media(max-width:800px){.product-journey{display:flex;flex-direction:column;gap:0;padding-top:110px}.journey-product{width:100%;top:110px;margin:0;height:clamp(235px,36svh,340px);padding:10px 0 7px;background:#fff8eef5;backdrop-filter:blur(8px);border-bottom:1px solid #42677933;flex-shrink:0}.product-render{min-height:115px}.product-caption{font-size:8px}.product-controls{gap:4px;margin:4px 0}.product-controls button{font-size:10px;padding:5px 8px;min-height:30px}.venture .product-hint{font-size:9px;margin:0}.product-disclaimer,.product-track{display:none}.venture .journey-copy .vhero{padding-top:35px!important}.venture .journey-copy h1{font-size:clamp(40px,8vw,64px)}.venture .journey-copy h2{font-size:clamp(32px,7vw,52px)}.venture .journey-copy section,.venture .journey-copy :target{scroll-margin-top:calc(36svh + 141px)!important}.venture .journey-copy .vstats{grid-template-columns:1fr}.venture .journey-copy .vstats div{display:flex;align-items:center;gap:18px}.venture .journey-copy .vstats strong{font-size:30px}.venture .journey-copy .vstats span{font-size:13px}.venture:has(.product-journey){padding:0 15px}.product-controls .touch-rotate{display:inline-block}}
 @media(prefers-reduced-motion:reduce){.product-journey *{animation:none!important;transition:none!important}}
+
+/* The product floats alongside the story, without a separate viewer panel. */
+.product-journey{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px}
+.journey-product{top:145px;margin-top:190px;height:clamp(260px,45svh,430px);background:none;z-index:8}
+.product-render{min-height:0}.product-canvas canvas{cursor:grab}.product-canvas canvas:active{cursor:grabbing}
+@media(max-width:800px){
+ .product-journey{display:flex;padding-top:100px;gap:0}
+ .journey-product{top:100px;margin:0;height:140px;width:100%;padding:0;background:linear-gradient(#fff8ee 88%,#fff8ee00);border:0;backdrop-filter:none}
+ .product-render{width:220px;max-width:75%;margin:auto;flex:none;height:140px}
+ .venture .journey-copy .vhero{padding-top:18px!important}
+ .venture .journey-copy section,.venture .journey-copy :target{scroll-margin-top:255px!important}
+}
